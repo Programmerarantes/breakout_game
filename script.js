@@ -1,18 +1,20 @@
 const grid = document.querySelector('.grid')
+const scoreDisplay = document.querySelector('#score')
 const blockWidth = 100
-const blockHeight = 200
+const blockHeight = 20
 const boardWidth = 560
 const boardHeight = 300
 const ballDiameter = 20
 let timerId
-let xDirection = 2
+let score = 0
+let xDirection = -2
 let yDirection = 2 
 
 const userStart = [230, 10]
 let currentPosition = userStart
 
 
-const ballStart = [270, 35]
+const ballStart = [270, 40]
 let ballCurrentPosition = ballStart
 
 //create Block
@@ -116,17 +118,42 @@ timerId = setInterval(moveBall, 30)
 //check for colission
 
 function checkForCollisions() {
+    //check for div collisions
+    for(let i = 0; i < blocks.length; i++) {
+
+    }
+
     //check to not go over the size of the div
     if(ballCurrentPosition[0] >= (boardWidth - ballDiameter) || 
-        ballCurrentPosition[1] >= (boardHeight - ballDiameter)
+        ballCurrentPosition[1] >= (boardHeight - ballDiameter) ||
+        ballCurrentPosition[0] <= 0
     ) {
         changeDirection()
+    }
+
+    //check for game over
+    if(ballCurrentPosition[1] <= 0) {
+        clearInterval(timerId)
+        scoreDisplay.innerHtml = 'You Lose'
+        document.removeEventListener('keydown', moveUser)
     }
 }
 
 function changeDirection() {
     if (xDirection === 2 && yDirection === 2) {
         xDirection = -2
+        return
+    }
+    if (xDirection === 2 && yDirection === -2) {
+        xDirection = -2
+        return
+    }
+    if (xDirection === -2 && yDirection === -2) {
+        yDirection = 2
+        return
+    }
+    if (xDirection === -2 && yDirection === 2) {
+        xDirection = 2
         return
     }
 }
