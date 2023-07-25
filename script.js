@@ -27,7 +27,7 @@ class Block {
         this.topRight = [xAxis + blockWidth, yAxis + blockHeight]
     }
 }
-
+//all my blocks
 const blocks = [
     new Block(10, 270),
     new Block(120, 270),
@@ -113,10 +113,9 @@ function moveBall() {
     checkForCollisions()    
 }
 
-timerId = setInterval(moveBall, 15)
+timerId = setInterval(moveBall, 30)
 
 //check for colission
-
 function checkForCollisions() {
     //check for block collisions
     for(let i = 0; i < blocks.length; i++) {
@@ -140,38 +139,37 @@ function checkForCollisions() {
         }
     }
 
-    //check to not go over the size of the div
-    if (ballCurrentPosition[0] - ballDiameter > boardWidth || ballCurrentPosition[0] - ballDiameter < 0) {
-            ballCurrentPosition[0] = - ballCurrentPosition[0]
-    }
-    if (ballCurrentPosition[1] - ballDiameter < 0) {
-        ballCurrentPosition[1] = - ballCurrentPosition[1]
-    }
-    if (ballCurrentPosition[1] + ballDiameter > boardHeight){
+    //check for wall collision
+    if (ballCurrentPosition[0] >= (boardWidth - ballDiameter)|| 
+        ballCurrentPosition[1] >= (boardHeight - ballDiameter) ||
+        ballCurrentPosition[0] <=0 
+        ) {
+            
         changeDirection()
     }
+
     //check for user collisions
-    if 
+    if
     (
         (ballCurrentPosition[0] > currentPosition[0] && ballCurrentPosition[0] < currentPosition[0] + blockWidth) &&
-    (ballCurrentPosition[1] > ballCurrentPosition[1] && ballCurrentPosition[1] < currentPosition[1] + blockHeight)
-    )
-    {
+        (ballCurrentPosition[1] > currentPosition[1] && ballCurrentPosition[1] < currentPosition[1] + blockHeight ) 
+    ) {
         changeDirection()
     }
     
     
     //check for game over
-    if(ballCurrentPosition[1] <= 0) {
+    if (ballCurrentPosition[1] <= 0) {
         clearInterval(timerId)
-        scoreDisplay.innerHtml = 'You Lose'
+        scoreDisplay.innerHTML = 'You lose!'
         document.removeEventListener('keydown', moveUser)
-    }
+      }
 }
+    
 
 function changeDirection() {
     if (xDirection === 2 && yDirection === 2) {
-        xDirection = -2
+        yDirection = -2
         return
     }
     if (xDirection === 2 && yDirection === -2) {
